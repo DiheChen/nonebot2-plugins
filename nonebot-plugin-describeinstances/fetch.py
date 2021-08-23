@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-23 09:59:04
- - LastEditTime: 2021-08-23 17:45:14
+ - LastEditTime: 2021-08-24 05:07:13
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -14,6 +14,7 @@ from time import time
 from typing import Any, Dict, Union
 
 from aiohttp import ClientSession
+from loguru import logger
 
 try:
     import ujson as json
@@ -44,11 +45,15 @@ async def fetch_data(instances: str) -> Union[str, Dict]:
         "SecretId": Config.secret_id,
     }
     params["Signature"] = get_signature(params)
-    async with ClientSession() as session:
-        async with session.get("https://nlp.tencentcloudapi.com/", params=params, verify_ssl=False) as resp:
-            if "Error" in (data := await resp.json())["Response"]:
-                return data["Response"]["Error"]["Message"]
-            return json.loads(data["Response"]["Content"])
+    try:
+        async with ClientSession() as session:
+            async with session.get("https://nlp.tencentcloudapi.com/", params=params, verify_ssl=False) as resp:
+                if "Error" in (data := await resp.json())["Response"]:
+                    return data["Response"]["Error"]["Message"]
+                return json.loads(data["Response"]["Content"])
+    except Exception as e:
+        logger.exception(e)
+        return str(e)
 
 
 def processing_data(data: Any) -> str:
@@ -59,4 +64,4 @@ def processing_data(data: Any) -> str:
             describe=data["简介"][0]["Name"] if "简介" in data else data["Foundin"][0]["Name"]
         ).execute()
         data = data["简介"][0]["Name"] if "简介" in data else data["Foundin"][0]["Name"]
-    return data
+    return str(data)
