@@ -11,6 +11,7 @@ nonebot2 = "^2.0.0-alpha.15"
 nonebot-adapter-cqhttp = "^2.0.0-alpha.15"
 aiohttp = "^3.7.4"
 peewee = "^3.14.4"
+ujson = "^4.1.0"
 
 [tool.poetry.dev-dependencies]
 

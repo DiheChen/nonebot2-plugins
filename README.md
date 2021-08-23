@@ -5,9 +5,11 @@
 
 ## 目前功能
 
-- nonebot-plugin-describeinstances
+- nonebot-plugin-describeinstances 实体信息查询
 
   > 接口来自 [腾讯云 自然语言处理 实体信息查询](https://cloud.tencent.com/document/api/271/39420) , 需自行前往 [腾讯云 API 密钥管理](https://console.cloud.tencent.com/capi)  新建密钥
+
+- nonebot-plugin-ocr ocr文字识别
 
 ## 如何使用
 

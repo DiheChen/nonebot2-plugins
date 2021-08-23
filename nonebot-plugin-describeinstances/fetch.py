@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-23 09:59:04
- - LastEditTime: 2021-08-23 16:54:58
+ - LastEditTime: 2021-08-23 17:45:14
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -13,8 +13,12 @@ from random import randint
 from time import time
 from typing import Any, Dict, Union
 
-import ujson as json
 from aiohttp import ClientSession
+
+try:
+    import ujson as json
+except:
+    import json
 
 from .config import Config
 from .data import DescribeInstances
