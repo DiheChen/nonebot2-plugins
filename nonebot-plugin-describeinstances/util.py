@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-23 09:59:04
- - LastEditTime: 2021-08-24 05:07:13
+ - LastEditTime: 2021-08-26 05:45:50
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -15,20 +15,22 @@ from typing import Any, Dict, Union
 
 from aiohttp import ClientSession
 from loguru import logger
+from nonebot import get_driver
 
 try:
     import ujson as json
 except:
     import json
 
-from .config import Config
 from .data import DescribeInstances
+
+config = get_driver().config
 
 
 def get_signature(params: dict) -> str:
     sign_str = "GET" + "nlp.tencentcloudapi.com/" + "?" + \
         "&".join("%s=%s" % (k, params[k]) for k in sorted(params))
-    hashed = new(bytes(Config.secret_key, "utf-8"),
+    hashed = new(bytes(config.secret_key, "utf-8"),
                  bytes(sign_str, "utf-8"), sha1).digest()
     signature = b64encode(hashed)
     return signature.decode()
@@ -42,7 +44,7 @@ async def fetch_data(instances: str) -> Union[str, Dict]:
         "EntityName": instances,
         "Timestamp": int(time()),
         "Nonce": randint(1, int(1e9)),
-        "SecretId": Config.secret_id,
+        "SecretId": config.secret_id,
     }
     params["Signature"] = get_signature(params)
     try:
