@@ -11,6 +11,8 @@
 
 - nonebot-plugin-ocr ocr文字识别
 
+- nonebot-plugin-outdated_image 火星图统计
+
 ## 如何使用
 
 下载你中意的插件, 按常规方法添加到你的 nonebot2 机器人上。
