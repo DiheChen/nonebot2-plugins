@@ -13,11 +13,15 @@
 
 - nonebot-plugin-outdated_image 火星图统计
 
+  > 注意事项请见 [注释](https://github.com/Chendihe4975/nonebot2-plugins/blob/master/nonebot-plugin-outdated_image/__init__.py#L44) 。
+
 - nonebot-plugin-epic_reminder Epic 白嫖提醒小助手
 
   > Linux 玩家需自行将微软雅黑的字体文件 `msyh.ttc` 复制到插件目录下
   >
   > 也可使用其它字体, 见 [draw_image.py](https://github.com/Chendihe4975/nonebot2-plugins/blob/master/nonebot-plugin-epic_reminder/draw_image.py#L27)。
+  >
+  > Pillow >= 8.2.0
 
 ## 如何使用
 

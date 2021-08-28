@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-24 11:32:12
- - LastEditTime: 2021-08-26 14:01:44
+ - LastEditTime: 2021-08-28 21:09:50
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -41,10 +41,11 @@ def generate_forward_msg(msgs: Iterable, self_id: int) -> List:
             "type": "node",
             "data": {
                 "name": "老婆~",
+                # ↓ 旧版 go-cqhttp 与 onebot 标准不符, 若使用其它标准 onebot 协议端请修改下面字段为 `user_id` ↓
                 "uin": str(self_id),
                 "content": msg
             }
-        } for msg in msgs]
+            } for msg in msgs]
 
 
 @listen.handle()
