@@ -13,6 +13,12 @@
 
 - nonebot-plugin-outdated_image 火星图统计
 
+- nonebot-plugin-epic_reminder Epic 白嫖提醒小助手
+
+  > Linux 玩家需自行将微软雅黑的字体文件 `msyh.ttc` 复制到插件目录下
+  >
+  > 也可使用其它字体, 见 [draw_image.py](https://github.com/Chendihe4975/nonebot2-plugins/blob/master/nonebot-plugin-epic_reminder/draw_image.py#L27)。
+
 ## 如何使用
 
 下载你中意的插件, 按常规方法添加到你的 nonebot2 机器人上。
@@ -22,5 +28,8 @@
 - [nonebot / nonebot2](https://github.com/nonebot/nonebot2)
 - [Mrs4s / go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
 
+## 优化建议
+
+如有优化建议请积极提交 Issues 或 Pull requests。
 
 ![](https://i.loli.net/2021/08/23/5Je1CzgoGmqAI3V.jpg)
