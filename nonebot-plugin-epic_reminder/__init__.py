@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:55:35
- - LastEditTime: 2021-08-28 20:41:05
+ - LastEditTime: 2021-08-29 17:02:14
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -22,11 +22,7 @@ from .draw_image import GenerateImage
 from .util import date2time_stamp, fetch_data, get_data, startup_hook
 
 driver = get_driver()
-
-
-@driver.on_startup
-async def _():
-    await startup_hook()
+driver.on_startup(startup_hook)
 
 
 matchers = MatcherGroup()
@@ -61,7 +57,7 @@ async def _(bot: Bot, event: Event):
         await fetch_data()
         try:
             await force_update.finish("\n".join([
-                f"> {event.sender.card or event.sender.nickname}"
+                f"> {event.sender.card or event.sender.nickname}",
                 "已执行更新。"
             ]))
         except ActionFailed as e:

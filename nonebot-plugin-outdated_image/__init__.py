@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-24 11:32:12
- - LastEditTime: 2021-08-28 21:09:50
+ - LastEditTime: 2021-08-29 16:47:14
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -45,7 +45,7 @@ def generate_forward_msg(msgs: Iterable, self_id: int) -> List:
                 "uin": str(self_id),
                 "content": msg
             }
-            } for msg in msgs]
+        } for msg in msgs]
 
 
 @listen.handle()

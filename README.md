@@ -1,5 +1,25 @@
+<p align="center">
+  <a href="#"><img src="https://raw.githubusercontent.com/nonebot/nonebot2/master/docs/.vuepress/public/logo.png" width="200" height="200" alt="nonebot"></a>
+</p>
+
+<div align="center">
+
 # nonebot2-plugins
-~~女生自用~~ nonebot2 插件。
+
+_✨ ~~女生自用~~ nonebot2 插件。 ✨_
+
+</div>
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/Chendihe4975/nonebot2-plugins/master/LICENSE">
+    <img src="https://img.shields.io/github/license/Chendihe4975/nonebot2-plugins.svg" alt="license">
+  </a>
+  <a href="https://pypi.org/project/nonebot2/">
+    <img src="https://img.shields.io/badge/nonebot-2.0.0.a15+-red.svg" alt="pypi">
+  </a>
+  <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
+</p>
+
 
 ## 目前功能
 
