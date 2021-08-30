@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:55:35
- - LastEditTime: 2021-08-29 17:02:14
+ - LastEditTime: 2021-08-30 11:01:29
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -9,7 +9,7 @@
 from time import time
 
 from loguru import logger
-from nonebot import get_driver
+from nonebot import require, get_driver
 from nonebot.adapters.cqhttp.bot import Bot
 from nonebot.adapters.cqhttp.event import Event, MessageEvent
 from nonebot.adapters.cqhttp.message import MessageSegment
@@ -22,8 +22,9 @@ from .draw_image import GenerateImage
 from .util import date2time_stamp, fetch_data, get_data, startup_hook
 
 driver = get_driver()
+scheduler = require("nonebot_plugin_apscheduler").scheduler
 driver.on_startup(startup_hook)
-
+scheduler.add_job(fetch_data, "cron",day_of_week="thu", hour=23,minute=1)
 
 matchers = MatcherGroup()
 query_free_game = matchers.on_regex(
