@@ -29,7 +29,7 @@ config = get_driver().config
 
 def get_signature(params: dict) -> str:
     sign_str = "GET" + "nlp.tencentcloudapi.com/" + "?" + \
-        "&".join("%s=%s" % (k, params[k]) for k in sorted(params))
+               "&".join("%s=%s" % (k, params[k]) for k in sorted(params))
     hashed = new(bytes(config.secret_key, "utf-8"),
                  bytes(sign_str, "utf-8"), sha1).digest()
     signature = b64encode(hashed)

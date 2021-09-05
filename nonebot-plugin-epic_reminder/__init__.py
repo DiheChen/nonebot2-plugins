@@ -24,7 +24,7 @@ from .util import date2time_stamp, fetch_data, get_data, startup_hook
 driver = get_driver()
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 driver.on_startup(startup_hook)
-scheduler.add_job(fetch_data, "cron",day_of_week="thu", hour=23,minute=1)
+scheduler.add_job(fetch_data, "cron", day_of_week="thu", hour=23, minute=1)
 
 matchers = MatcherGroup()
 query_free_game = matchers.on_regex(

@@ -27,7 +27,7 @@ async def _(bot: Bot, event: Event, state: T_State):
 
 
 @ocr.got('image', prompt='请发送图片, 支持多张。')
-async def _(bot: Bot, event: Event,):
+async def _(bot: Bot, event: Event):
     if isinstance(event, MessageEvent):
         result = [f"> {event.sender.card or event.sender.nickname}"]
         image_list = [s.data['file']

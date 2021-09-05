@@ -1,14 +1,14 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:56:04
- - LastEditTime: 2021-08-28 21:05:22
+ - LastEditTime: 2021-09-02 23:45:47
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
 """
 from os import path
 from time import mktime, strptime
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientSession
 from loguru import logger
@@ -23,7 +23,7 @@ cache_data = path.abspath(path.join(path.dirname(__file__), "cache.json"))
 
 
 async def startup_hook():
-    if not path.exists(path.abspath(path.join(path.dirname(__file__), "cache.json"))):
+    if not path.exists(cache_data):
         await fetch_data()
     with open(cache_data, "r") as f:
         global epic_free_game_data
@@ -54,10 +54,10 @@ async def fetch_data() -> Optional[str]:
         return str(e)
 
 
-def get_data() -> Optional[List]:
+def get_data() -> Optional[List[Dict[str, Any]]]:
     if epic_free_game_data:
-        free_games = [i for i in epic_free_game_data["data"]["Catalog"]
-                      ["searchStore"]["elements"] if i["promotions"]]
+        free_games = [i for i in epic_free_game_data["data"]["Catalog"][
+            "searchStore"]["elements"] if i["promotions"]]
         data = [{
             "title": free_game["title"],
             "description": free_game["description"],
@@ -67,5 +67,5 @@ def get_data() -> Optional[List]:
                 "upcomingPromotionalOffers"])[0]["promotionalOffers"][0]["startDate"],
             "end_date": (free_game["promotions"]["promotionalOffers"] or free_game["promotions"][
                 "upcomingPromotionalOffers"])[0]["promotionalOffers"][0]["endDate"]
-            } for free_game in free_games]
+        } for free_game in free_games]
         return data

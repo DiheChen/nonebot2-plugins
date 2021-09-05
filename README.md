@@ -43,6 +43,16 @@ _✨ ~~女生自用~~ nonebot2 插件。 ✨_
   >
   > Pillow >= 8.2.0
 
+- nonebot-plugin-setu 群内活跃气氛小助手
+
+  > 接口来自 [Lolicon API](https://api.lolicon.app/) , 主要功能: 发涩图, 附带功能: 反向代理 i.pximg.net 。
+  >
+  > 配置项较为复杂, 见 [README](https://github.com/Chendihe4975/nonebot2-plugins/tree/master/nonebot-plugin-setu) 。
+  >
+  > 附带功能需开放公网访问, 可能会有憨批拿爬虫搁那 CC,  服务器上行被占满之后 websocket 连接可能会断。
+  >
+  > 可使用 反向代理 / CDN 增强安全性, 公用 Bot 可以考虑放弃该附带功能。
+
 ## 如何使用
 
 下载你中意的插件, 按常规方法添加到你的 nonebot2 机器人上。
@@ -55,5 +65,7 @@ _✨ ~~女生自用~~ nonebot2 插件。 ✨_
 ## 优化建议
 
 如有优化建议请积极提交 Issues 或 Pull requests。
+
+如果你要提交 Pull requests, 请确保你的代码风格和项目已有的代码保持一致。
 
 ![](https://i.loli.net/2021/08/23/5Je1CzgoGmqAI3V.jpg)
