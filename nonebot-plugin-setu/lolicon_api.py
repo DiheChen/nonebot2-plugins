@@ -1,12 +1,12 @@
 """
  - Author: DiheChen
  - Date: 2021-09-02 11:12:21
- - LastEditTime: 2021-09-05 12:40:15
+ - LastEditTime: 2021-09-07 00:55:10
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
 """
-from os import path
+from os import mkdir, path
 from time import localtime, strftime
 from typing import Any, Dict, List, Optional, Union
 from urllib.parse import urljoin
@@ -16,8 +16,8 @@ from loguru import logger
 from nonebot.adapters.cqhttp.message import MessageSegment
 
 from .config import config
-from .validation import RequestData
 from .util import headers
+from .validation import RequestData
 
 image_cache_path = path.abspath(path.join(path.dirname(__file__), "image"))
 
@@ -71,6 +71,13 @@ class LoliconAPI:
             await self._get_image(url := res["urls"][self.params.size])
             logger.info(f"Successfully downloaded image: {url}")
         return
+
+    @property
+    def tags(self):
+        result: List[str] = list()
+        for data in self.response:
+            result.extend(data["tags"])
+        return result
 
     @staticmethod
     def format_time(time_stamp: int) -> str:
