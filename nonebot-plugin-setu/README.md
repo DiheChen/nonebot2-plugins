@@ -4,24 +4,17 @@ nonebot-plugin-setu 配置说明。
 
 ## 配置
 
-自定义配置请修改 [config.py #L35](https://github.com/Chendihe4975/nonebot2-plugins/blob/master/nonebot-plugin-setu/config.py#L35),
+自定义配置请修改 [config.py #L39](https://github.com/Chendihe4975/nonebot2-plugins/blob/master/nonebot-plugin-setu/config.py#L39),
 
   - `auto_fetch` : 自动缓存图片
-
   - `global_r18` : 全局 r18 开关, 禁用后 Bot 将不发送 r18 图片
-
   - `recall_time` : 经过多少秒后撤回图片, 设置成 0 时候不自动撤回
-
   - `url_only` : 仅回复 url , 不发送图片
-
   - `online_mode_pure` 纯在线模式, 该模式下 Bot 将不会缓存图片到本地
-
   - `use_forward` : 启用合并转发
-
   - `proxy`: 代理服务器地址, 仅支持 http 代理
-
+  - `personalized_recommendation`: 个性化推荐开关
   - `public_address` : Bot 对外开放的地址, 若已设置反向代理, 该项应该填反向代理后的地址
-
   - `single_image_limit` : 限制单次发送色图数量
 
 ### public_address
@@ -92,10 +85,15 @@ OneBot 协议端将收到以下调用:
 
 你没搞好 `public_address` 别人可能打不开。
 
-## single_image_limit
+### single_image_limit
 
 限制单次发送色图数量, 默认为 10, 可调整为 1 - 100 之间的任意整数。
 
 ### auto_fetch
 
 url_only 及 online_mode_pure 均设定为 False 的时候, 可以设定 auto_fetch 为 1 - 100 任意正整数使机器人每隔半小时自动缓存该数量的图片。
+
+### personalized_recommendation
+
+个性化推荐, 记录用户喜欢看的色图的 tag, 若此项设为真值, 用户未指定涩图种类时, bot 将有 50 % 的概率为他来点他喜欢的。( 如果他看所有色图里某 tag 出现了 500 次以上, 则认为他喜欢这种涩图。 )
+

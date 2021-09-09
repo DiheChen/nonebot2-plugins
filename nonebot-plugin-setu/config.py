@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-09-01 17:48:22
- - LastEditTime: 2021-09-07 00:54:39
+ - LastEditTime: 2021-09-09 12:34:29
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -18,6 +18,7 @@ class Config(BaseModel):
     - `online_mode_pure` 纯在线模式, 该模式下 Bot 将不会缓存图片到本地
     - `use_forward` : 启用合并转发
     - `proxy`: 代理服务器地址, 仅支持 http 代理
+    - `personalized_recommendation` : 个性化推荐开关
     - `public_address` : Bot 对外开放的地址, 若已设置反向代理, 该项应该填反向代理后的地址
     - `single_image_limit` : 限制单次发送色图数量
     - `useless_tag`: 不具备实际意义的 tag, 统计用户性趣的时候这些 tag 将被忽略
@@ -30,6 +31,7 @@ class Config(BaseModel):
     use_forward: bool
     proxy: str
     reverse_proxy: str
+    personalized_recommendation: bool
     public_address: str
     single_image_limit: int
     useless_tag: list
@@ -44,11 +46,13 @@ setting = {
     "use_forward": True,
     "proxy": "",
     "reverse_proxy": "",
+    "personalized_recommendation": True,
     "public_address": "http://127.0.0.1:8080",
-    "single_image_limit": 100,
+    "single_image_limit": 10,
     "useless_tag": [
-        "原创", "オリジナル", "女孩子", "女の子", "R-18", "アニメ", "イラスト",
-        "創作", "SD", "漫画", "デフォルメ", "看板娘", "仕事", "仕事絵", "メスガキ",
+        "原创", "オリジナル", "女孩子", "女の子", "R-18",
+        "アニメ", "イラスト", "創作", "SD", "漫画",
+        "デフォルメ", "看板娘", "仕事", "仕事絵", "メスガキ",
         "立ち絵", "doujin", "C96", "C95", "C97"
     ]
 }

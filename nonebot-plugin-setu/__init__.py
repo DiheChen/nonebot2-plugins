@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-31 19:45:30
- - LastEditTime: 2021-09-07 00:52:37
+ - LastEditTime: 2021-09-08 23:59:40
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -9,7 +9,7 @@
 from asyncio import sleep
 from collections import Counter
 from os import mkdir, path
-from random import choice
+from random import choice, random
 from typing import Dict, Iterable
 
 from loguru import logger
@@ -97,6 +97,8 @@ async def auto_fetch_setu():
     async with LoliconAPI(params=rd) as api:
         await api.auto_fetch()
     return
+
+
 if not config.url_only and not config.online_mode_pure and config.auto_fetch:
     scheduler.add_job(auto_fetch_setu, "interval", minutes=30)
 
@@ -121,6 +123,10 @@ async def _(bot: Bot, event: Event, state: T_State):
                 params.update({"r18": 1})
         if keyword:
             params.update({"keyword": keyword})
+        else:
+            if config.personalized_recommendation and (random() > 0.5):
+                if res := list(UserXP.select().where(UserXP.user_id == event.user_id, UserXP.count > 500)):
+                    params.update({"tag": choice(res)})
         if config.reverse_proxy:
             params.update({"proxy": config.reverse_proxy})
         rd = RequestData(**params)
@@ -145,6 +151,7 @@ async def _(bot: Bot, event: Event, state: T_State):
         logger.warning("Not supported: setu.")
         return
 
+
 get_pixiv_image = matchers.on_command(
     "/pixiv", aliases={"/pid"}, priority=1, block=True
 )
@@ -153,7 +160,7 @@ get_pixiv_image = matchers.on_command(
 @get_pixiv_image.handle()
 async def _(bot: Bot, event: Event):
     if isinstance(event, MessageEvent):
-        if (illust_id := event.get_plaintext()).isdigit() and (msgs := await ajax_pixiv(illust_id)):
+        if (illust_id := event.get_plaintext()).isdigit() and (msgs := await ajax_pixiv(int(illust_id))):
             if config.use_forward:
                 await send_forward_msg(msgs, bot, event)
             else:
@@ -186,6 +193,7 @@ async def _(matcher: Matcher, bot: Bot, event: Event, state: T_State):
         logger.warning("Not supported: setu.")
         return
 
+
 set_group_block = matchers.on_command(
     "禁用色图", aliases={"关闭色图"}, permission=SUPERUSER, priority=5, block=True)
 cancel_group_block = matchers.on_command(
@@ -207,7 +215,7 @@ async def _(bot: Bot, event: Event):
             ]).execute()
             await set_group_block.finish("\n".join([
                 f"> {event.sender.card or event.sender.nickname}",
-                "h 是可以的: "+", ".join(list(map(str, group_ids)))
+                "h 是可以的: " + ", ".join(list(map(str, group_ids)))
             ]))
     else:
         logger.warning("Not supported: setu.")
@@ -304,14 +312,14 @@ async def _(bot: Bot, event: Event):
                 else:
                     card, nickname, name = event.sender.card, event.sender.nickname, "你"
                 buf: Dict[str, int] = dict([(r.tag, r.count) for r in res])
-                statistics = dict(sorted(buf.items(), key=lambda x: x[1],
+                statistics = dict(sorted(list(buf.items()), key=lambda x: x[1],
                                          reverse=True)[:len(buf) if len(buf) < 10 else 10])
                 await get_user_xp.send("\n".join([
                     f"> {card or nickname}",
                     f"{name}喜欢以下元素:" + ", ".join(list(statistics.keys())[
-                        :int(len(statistics)/2)]),
+                                                 :int(len(statistics) / 2)]),
                     f"{name}可能对以下元素感兴趣:" + ", ".join(list(statistics.keys())[
-                        int(len(statistics)/2):])
+                                                     int(len(statistics) / 2):])
                 ]))
             raise FinishedException
         await get_user_xp.finish(f"我也不知道ta的xp呢~")
