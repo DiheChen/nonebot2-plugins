@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-31 19:45:30
- - LastEditTime: 2021-09-08 23:59:40
+ - LastEditTime: 2021-09-10 19:17:18
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -126,7 +126,7 @@ async def _(bot: Bot, event: Event, state: T_State):
         else:
             if config.personalized_recommendation and (random() > 0.5):
                 if res := list(UserXP.select().where(UserXP.user_id == event.user_id, UserXP.count > 500)):
-                    params.update({"tag": choice(res)})
+                    params.update({"tag": [[choice(res).tag]]})
         if config.reverse_proxy:
             params.update({"proxy": config.reverse_proxy})
         rd = RequestData(**params)
