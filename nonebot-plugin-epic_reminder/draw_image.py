@@ -1,10 +1,10 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:55:31
- - LastEditTime: 2021-08-28 21:03:11
+ - LastEditTime: 2021-09-13 22:19:57
  - LastEditors: DiheChen
  - Description: None
- - GitHub: https://github.com/Chendihe4975
+ - GitHub: https://github.com/DiheChen
 """
 from base64 import b64encode
 from io import BytesIO
@@ -40,7 +40,7 @@ class GenerateImage:
     def date2str(date: str):
         return date[0:4] + "年" + date[5:7] + "月" + date[8:10] + "日"
 
-    def image2b64(self, image: Image.Image):
+    def image2b64(self, image: Image.Image) -> str:
         buf = BytesIO()
         image.save(buf, format='PNG')
         base64_str = b64encode(buf.getvalue()).decode()
@@ -54,9 +54,10 @@ class GenerateImage:
             xy, text=text, font=font, fill=color, anchor="lt")
         return Image.alpha_composite(image, new_image)
 
-    async def generate_image(self):
+    async def generate_image(self) -> str:
         image = Image.new(
-            "RGBA", (160 + len(self.images) * 400 if len(self.data) > 1 else 60 + len(self.images) * 400, 720),
+            "RGBA", (160 + len(self.images) * 400 if len(self.data)
+                     > 1 else 60 + len(self.images) * 400, 720),
             (18, 18, 18, 255))
         image = self.draw_text(
             image, "免费游戏", 30, (60, 30), (255, 255, 255, 255))
@@ -74,9 +75,13 @@ class GenerateImage:
             image = self.draw_text(
                 image, "原价" + " " * 9 + self.data[count]["original_price"], 20, (count * 440 + 60, 620))
             image = self.draw_text(
-                image, "开始时间:  " + GenerateImage.date2str(self.data[count]["start_date"]), 20, (count * 440 + 60, 655))
+                image, "开始时间:  " +
+                GenerateImage.date2str(self.data[count]["start_date"]),
+                20, (count * 440 + 60, 655))
             image = self.draw_text(
-                image, "截止时间:  " + GenerateImage.date2str(self.data[count]["end_date"]), 20, (count * 440 + 60, 680))
+                image, "截止时间:  " +
+                GenerateImage.date2str(self.data[count]["end_date"]),
+                20, (count * 440 + 60, 680))
         return self.image2b64(image)
 
     async def __aexit__(self, *args):
