@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-09-02 11:12:21
- - LastEditTime: 2021-09-07 00:55:10
+ - LastEditTime: 2021-09-16 22:16:27
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -43,7 +43,7 @@ class LoliconAPI:
     async def _get_image(self, url: str) -> Union[str, MessageSegment]:
         if config.online_mode_pure:
             return MessageSegment.image(urljoin(config.public_address,
-                                                "pixiv") + "/".join(url.split("/")[3:]))
+                                                "pixiv/") + "/".join(url.split("/")[3:]))
         try:
             assert not config.url_only
             if not path.exists(image_path := path.join(image_cache_path, url.split("/")[-1])):
