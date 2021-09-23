@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:55:31
- - LastEditTime: 2021-09-13 22:19:57
+ - LastEditTime: 2021-09-24 01:40:36
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/DiheChen
@@ -56,17 +56,17 @@ class GenerateImage:
 
     async def generate_image(self) -> str:
         image = Image.new(
-            "RGBA", (160 + len(self.images) * 400 if len(self.data)
-                     > 1 else 60 + len(self.images) * 400, 720),
+            "RGBA", (len(self.images) * 480 - abs(len(self.images)-1 * 40) if len(self.data)
+                     > 1 else 460, 720),
             (18, 18, 18, 255))
         image = self.draw_text(
             image, "免费游戏", 30, (60, 30), (255, 255, 255, 255))
         banner_draw = ImageDraw.ImageDraw(
-            blue_banner := Image.new("RGBA", (360, 35)))
+            blue_banner := Image.new("RGBA", (360, 40)))
         for count, game_cover in enumerate(self.images):
-            banner_draw.rounded_rectangle((0, 0, 360, 35), 10, fill=(
+            banner_draw.rounded_rectangle((0, 0, 360, 40), 10, fill=(
                 63, 72, 204) if time() > date2time_stamp(self.data[count]["start_date"]) else (0, 0, 0))
-            game_cover.paste(blue_banner, (0, 445))
+            game_cover.paste(blue_banner.crop((0, 5, 360, 40)), (0, 445))
             image.alpha_composite(game_cover, (count * 440 + 60, 80))
             image = self.draw_text(image, "当前免费" if time() > date2time_stamp(
                 self.data[count]["start_date"]) else "即将推出", 20, (count * 440 + 205, 535))

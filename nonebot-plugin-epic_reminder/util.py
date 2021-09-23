@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-27 08:56:04
- - LastEditTime: 2021-09-02 23:45:47
+ - LastEditTime: 2021-09-24 01:40:53
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -58,14 +58,23 @@ def get_data() -> Optional[List[Dict[str, Any]]]:
     if epic_free_game_data:
         free_games = [i for i in epic_free_game_data["data"]["Catalog"][
             "searchStore"]["elements"] if i["promotions"]]
-        data = [{
-            "title": free_game["title"],
-            "description": free_game["description"],
-            "url": free_game["keyImages"][0]["url"],
-            "original_price": free_game["price"]["totalPrice"]["fmtPrice"]["originalPrice"],
-            "start_date": (free_game["promotions"]["promotionalOffers"] or free_game["promotions"][
-                "upcomingPromotionalOffers"])[0]["promotionalOffers"][0]["startDate"],
-            "end_date": (free_game["promotions"]["promotionalOffers"] or free_game["promotions"][
-                "upcomingPromotionalOffers"])[0]["promotionalOffers"][0]["endDate"]
-        } for free_game in free_games]
-        return data
+        result = list()
+        for game in free_games:
+            if game["promotions"]["promotionalOffers"]:
+                extra = {
+                    "start_date": game["promotions"]["promotionalOffers"][0]["promotionalOffers"][0]["startDate"],
+                    "end_date": game["promotions"]["promotionalOffers"][0]["promotionalOffers"][0]["endDate"]
+                }
+            else:
+                extra = {
+                    "start_date": game["promotions"]["upcomingPromotionalOffers"][0]["promotionalOffers"][0]["startDate"],
+                    "end_date": game["promotions"]["upcomingPromotionalOffers"][0]["promotionalOffers"][0]["endDate"]
+                }
+            result.append(
+                dict({
+                    "title": game["title"],
+                    "description": game["description"],
+                    "url": game["keyImages"][0]["url"],
+                    "original_price": game["price"]["totalPrice"]["fmtPrice"]["originalPrice"],
+                }, **extra))
+        return result
