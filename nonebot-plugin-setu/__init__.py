@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-08-31 19:45:30
- - LastEditTime: 2021-09-10 19:17:18
+ - LastEditTime: 2021-09-27 00:23:06
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -18,16 +18,13 @@ from nonebot.adapters.cqhttp.bot import Bot
 from nonebot.adapters.cqhttp.event import (Event, GroupMessageEvent,
                                            MessageEvent, PrivateMessageEvent)
 from nonebot.adapters.cqhttp.message import Message, MessageSegment
-from nonebot.exception import ActionFailed, FinishedException, IgnoredException
-from nonebot.matcher import Matcher
-from nonebot.message import run_preprocessor
-from nonebot.permission import SUPERUSER
+from nonebot.exception import ActionFailed, FinishedException
 from nonebot.plugin import MatcherGroup
 from nonebot.typing import T_State
 
 from . import route
 from .config import config
-from .data import Block, UserXP
+from .data import UserXP
 from .lolicon_api import LoliconAPI
 from .util import ajax_pixiv, get_user_qq
 from .validation import RequestData
@@ -175,117 +172,6 @@ async def _(bot: Bot, event: Event):
     else:
         logger.warning("Not supported: setu.")
         return
-
-
-@run_preprocessor
-async def _(matcher: Matcher, bot: Bot, event: Event, state: T_State):
-    if isinstance(event, MessageEvent):
-        if matcher.plugin_name == "nonebot-plugin-setu":
-            if "启用" in event.raw_message or "开启" in event.raw_message:
-                return
-            if isinstance(event, PrivateMessageEvent):
-                if Block.get_or_none(user_id=event.user_id):
-                    raise IgnoredException("This user is blocked.")
-            if isinstance(event, GroupMessageEvent):
-                if Block.get_or_none(group_id=event.group_id) or Block.get_or_none(user_id=event.user_id):
-                    raise IgnoredException("This group is blocked.")
-    else:
-        logger.warning("Not supported: setu.")
-        return
-
-
-set_group_block = matchers.on_command(
-    "禁用色图", aliases={"关闭色图"}, permission=SUPERUSER, priority=5, block=True)
-cancel_group_block = matchers.on_command(
-    "启用色图", aliases={"开启色图"}, permission=SUPERUSER, priority=5, block=True)
-
-
-@set_group_block.handle()
-async def _(bot: Bot, event: Event):
-    if isinstance(event, GroupMessageEvent):
-        Block.replace(group_id=event.group_id).execute()
-        await set_group_block.finish("\n".join([
-            f"> {event.sender.card or event.sender.nickname}",
-            "h 是不行的!"
-        ]))
-    elif isinstance(event, PrivateMessageEvent):
-        if group_ids := list(map(int, filter(lambda x: x.isdigit(), event.get_plaintext().split()))):
-            Block.replace_many([
-                {"group_id": group_id} for group_id in group_ids
-            ]).execute()
-            await set_group_block.finish("\n".join([
-                f"> {event.sender.card or event.sender.nickname}",
-                "h 是可以的: " + ", ".join(list(map(str, group_ids)))
-            ]))
-    else:
-        logger.warning("Not supported: setu.")
-        return
-
-
-@cancel_group_block.handle()
-async def _(bot: Bot, event: Event):
-    if isinstance(event, GroupMessageEvent):
-        Block.delete().where(Block.group_id == event.group_id).execute()
-        await cancel_group_block.finish("\n".join([
-            f"> {event.sender.card or event.sender.nickname}",
-            "h 是可以的!"
-        ]))
-    elif isinstance(event, PrivateMessageEvent):
-        if group_ids := list(map(int, filter(lambda x: x.isdigit(), event.get_plaintext().split()))):
-            result = [group_id for group_id in group_ids if Block.delete().where(
-                Block.user_id == group_id).execute()]
-            await set_group_block.finish("\n".join([
-                f"> {event.sender.card or event.sender.nickname}",
-                "h 是不行的: " + ", ".join(list(map(str, result)))
-            ]))
-    else:
-        logger.warning("Not supported: setu.")
-        return
-
-
-set_user_block = matchers.on_command(
-    "拉黑用户", permission=SUPERUSER, priority=5, block=True
-)
-cancel_user_block = matchers.on_command(
-    "解封用户", permission=SUPERUSER, priority=5, block=True
-)
-
-
-@set_user_block.handle()
-async def _(bot: Bot, event: Event):
-    user_ids = None
-    if isinstance(event, GroupMessageEvent):
-        user_ids = get_user_qq(event.raw_message)
-    elif isinstance(event, PrivateMessageEvent):
-        user_ids = list(
-            map(int, filter(lambda x: x.isdigit(), event.get_plaintext().split())))
-    if user_ids:
-        Block.replace_many([{
-            "user_id": user_id
-        } for user_id in user_ids]).execute()
-        await set_user_block.finish("\n".join([
-            f"> {event.sender.card or event.sender.nickname}",
-            "h 是不行的: " + ", ".join(list(map(str, user_ids)))
-        ]))
-
-
-@cancel_user_block.handle()
-async def _(bot: Bot, event: Event):
-    result = None
-    if isinstance(event, GroupMessageEvent):
-        if user_ids := get_user_qq(event.raw_message):
-            result = [user_id for user_id in user_ids if Block.delete().where(
-                Block.user_id == user_id).execute()]
-    elif isinstance(event, PrivateMessageEvent):
-        if user_ids := list(map(int, filter(lambda x: x.isdigit(), event.get_plaintext().split()))):
-            result = [user_id for user_id in user_ids if Block.delete().where(
-                Block.user_id == user_id).execute()]
-    if result:
-        await cancel_user_block.finish("\n".join([
-            f"> {event.sender.card or event.sender.nickname}",
-            "h 是可以的: " + ", ".join(list(map(str, result)))
-        ]))
-
 
 get_user_xp = matchers.on_command(
     "查询xp", aliases={"查询XP"}, priority=1, block=True

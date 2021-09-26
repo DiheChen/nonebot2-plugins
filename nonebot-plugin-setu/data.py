@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-09-04 13:34:27
- - LastEditTime: 2021-09-06 23:43:55
+ - LastEditTime: 2021-09-27 00:21:27
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -17,12 +17,6 @@ db = pw.SqliteDatabase(db_path)
 class BaseModel(pw.Model):
     class Meta:
         database = db
-
-
-class Block(BaseModel):
-    id = pw.AutoField(primary_key=True)
-    user_id = pw.IntegerField(null=True)
-    group_id = pw.IntegerField(null=True)
 
 
 class UserXP(BaseModel):
