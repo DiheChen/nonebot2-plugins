@@ -1,7 +1,7 @@
 """
  - Author: DiheChen
  - Date: 2021-09-04 13:34:27
- - LastEditTime: 2021-09-27 00:21:27
+ - LastEditTime: 2021-09-27 00:36:14
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
@@ -30,5 +30,5 @@ class UserXP(BaseModel):
 
 if not path.exists(db_path):
     db.connect()
-    db.create_tables([Block, UserXP])
+    db.create_tables([UserXP])
     db.close()

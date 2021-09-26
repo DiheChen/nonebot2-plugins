@@ -1,12 +1,12 @@
 """
  - Author: DiheChen
  - Date: 2021-08-23 15:06:44
- - LastEditTime: 2021-08-28 18:06:49
+ - LastEditTime: 2021-09-27 00:27:47
  - LastEditors: DiheChen
  - Description: None
  - GitHub: https://github.com/Chendihe4975
 """
-from re import compile, search
+from re import match
 
 from loguru import logger
 from nonebot.plugin import on_regex
@@ -24,7 +24,7 @@ nlp = on_regex(r'^(你?知道)?(.{1,32}?)是(什么|谁|啥)吗?[?？]?$', prior
 @nlp.handle()
 async def _(bot: Bot, event: Event, state: T_State):
     if isinstance(event, MessageEvent):
-        if search(compile(r'[这那谁你我他她它]个?是[(什么)谁啥]'), event.raw_message):
+        if match(r'[这那谁你我他她它]个?是[(什么)谁啥]', event.raw_message):
             return
         instances = state["_matched_groups"][1]
         result = DescribeInstances.get_or_none(instances=instances)
